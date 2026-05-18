@@ -8,7 +8,8 @@
  * @see https://github.com/testing-library/react-testing-library/issues/1339
  */
 import * as React from 'react'
-import {renderAsync, screen, configure} from '../'
+import ReactDOMServer from 'react-dom/server'
+import {renderAsync, fireEvent, screen, configure} from '../'
 
 // ---------------------------------------------------------------------------
 // Helper: simulates a React-Aria-style component that sets ARIA attributes
@@ -129,6 +130,29 @@ describe('renderAsync', () => {
     await renderAsync(<Component />, {reactStrictMode: true})
     // In StrictMode effects run twice
     expect(effectSpy).toHaveBeenCalledTimes(2)
+  })
+
+  test('hydrate makes the UI interactive', async () => {
+    function App() {
+      const [clicked, handleClick] = React.useReducer(n => n + 1, 0)
+      return (
+        <button type="button" onClick={handleClick}>
+          clicked:{clicked}
+        </button>
+      )
+    }
+    const ui = <App />
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    container.innerHTML = ReactDOMServer.renderToString(ui)
+
+    expect(container).toHaveTextContent('clicked:0')
+
+    await renderAsync(ui, {container, hydrate: true})
+
+    fireEvent.click(container.querySelector('button'))
+
+    expect(container).toHaveTextContent('clicked:1')
   })
 
   test('legacyRoot throws when React does not support it', async () => {

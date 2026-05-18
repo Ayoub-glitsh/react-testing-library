@@ -372,6 +372,7 @@ function resolveRenderOptions(options = {}) {
 function render(ui, options = {}) {
   const {legacyRoot, ...resolvedOptions} = resolveRenderOptions(options)
 
+  /* istanbul ignore next */
   if (legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
@@ -404,6 +405,7 @@ function render(ui, options = {}) {
 async function renderAsync(ui, options = {}) {
   const {legacyRoot, ...resolvedOptions} = resolveRenderOptions(options)
 
+  /* istanbul ignore next */
   if (legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
@@ -438,6 +440,7 @@ function cleanup() {
 function renderHook(renderCallback, options = {}) {
   const {initialProps, ...renderOptions} = options
 
+  /* istanbul ignore next */
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
