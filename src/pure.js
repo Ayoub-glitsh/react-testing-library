@@ -78,7 +78,7 @@ const mountedContainers = new Set()
 const mountedRootEntries = []
 
 function strictModeIfNeeded(innerElement, reactStrictMode) {
-  return (reactStrictMode ?? getConfig().reactStrictMode)
+  return reactStrictMode ?? getConfig().reactStrictMode
     ? React.createElement(React.StrictMode, null, innerElement)
     : innerElement
 }

@@ -54,9 +54,7 @@ export type BaseRenderOptions<
 > = RenderOptions<Q, Container, BaseElement>
 
 type RendererableContainer = ReactDOMClient.Container
-type HydrateableContainer = Parameters<
-  (typeof ReactDOMClient)['hydrateRoot']
->[0]
+type HydrateableContainer = Parameters<typeof ReactDOMClient['hydrateRoot']>[0]
 /** @deprecated */
 export interface ClientRenderOptions<
   Q extends Queries,
