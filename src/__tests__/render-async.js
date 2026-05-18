@@ -1,5 +1,5 @@
 /**
- * Tests for renderAsync — the async variant of render that fully flushes
+ * Tests for renderAsync - the async variant of render that fully flushes
  * useLayoutEffect chains before returning. This is the fix for components
  * (e.g. React-Aria) that set ARIA attributes / roles in useLayoutEffect and
  * therefore appear "incomplete" when queried immediately after a synchronous
@@ -18,9 +18,9 @@ import {renderAsync, screen, configure} from '../'
 /**
  * Mimics a combobox-like component that:
  *  1. Renders a plain <input> on mount.
- *  2. In useLayoutEffect, assigns the `role`, `aria-expanded`, and `aria-label`
- *     attributes that React-Aria would normally set — and also triggers a
- *     state update to simulate a second render cycle.
+ *  2. In useLayoutEffect, assigns the `role`, `aria-expanded`, and
+ *     `aria-label` attributes that React-Aria would normally set - and also
+ *     triggers a state update to simulate a second render cycle.
  */
 function AriaComboBox({onSearch}) {
   const inputRef = React.useRef(null)
@@ -55,11 +55,11 @@ function AriaComboBox({onSearch}) {
 // ---------------------------------------------------------------------------
 
 describe('renderAsync', () => {
-  test('fully flushes useLayoutEffect before returning — ARIA attributes are present', async () => {
+  test('fully flushes useLayoutEffect before returning - ARIA attributes are present', async () => {
     await renderAsync(<AriaComboBox />)
 
-    // With synchronous render() these attributes would be missing because the
-    // useLayoutEffect → setState → re-render cycle hasn't completed yet.
+    // With synchronous render() these attributes would be missing because
+    // the useLayoutEffect -> setState -> re-render cycle hasn't completed.
     const input = screen.getByRole('combobox')
     expect(input).toBeInTheDocument()
     expect(input).toHaveAttribute('aria-expanded', 'false')
@@ -71,7 +71,7 @@ describe('renderAsync', () => {
     await renderAsync(<AriaComboBox />)
 
     const input = screen.getByRole('combobox')
-    // data-initialised is set to "true" only after the setState in useLayoutEffect
+    // data-initialised is set to "true" only after setState in useLayoutEffect
     expect(input).toHaveAttribute('data-initialised', 'true')
   })
 
@@ -83,14 +83,14 @@ describe('renderAsync', () => {
 
     const input = getByPlaceholderText('Type to Start Searching...')
     expect(input).toBeInTheDocument()
-    // The input should be fully interactive — role is set
+    // The input should be fully interactive - role is set
     expect(input).toHaveAttribute('role', 'combobox')
   })
 
   test('rerender (async) also flushes effects', async () => {
     const {rerender, getByRole} = await renderAsync(<AriaComboBox />)
 
-    // Rerender with a new prop — effects should still flush
+    // Rerender with a new prop - effects should still flush
     await rerender(<AriaComboBox onSearch={() => {}} />)
 
     const input = getByRole('combobox')
@@ -105,9 +105,7 @@ describe('renderAsync', () => {
   test('accepts the same options as render (wrapper, queries, etc.)', async () => {
     const Context = React.createContext('default')
     function Wrapper({children}) {
-      return (
-        <Context.Provider value="provided">{children}</Context.Provider>
-      )
+      return <Context.Provider value="provided">{children}</Context.Provider>
     }
 
     function ConsumerComponent() {
@@ -136,9 +134,9 @@ describe('renderAsync', () => {
   test('legacyRoot throws when React does not support it', async () => {
     // React 19+ does not expose ReactDOM.render
     if (typeof require('react-dom').render !== 'function') {
-      await expect(
-        renderAsync(<div />, {legacyRoot: true}),
-      ).rejects.toThrow('`legacyRoot: true` is not supported')
+      await expect(renderAsync(<div />, {legacyRoot: true})).rejects.toThrow(
+        '`legacyRoot: true` is not supported',
+      )
     }
   })
 

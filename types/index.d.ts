@@ -54,7 +54,9 @@ export type BaseRenderOptions<
 > = RenderOptions<Q, Container, BaseElement>
 
 type RendererableContainer = ReactDOMClient.Container
-type HydrateableContainer = Parameters<typeof ReactDOMClient['hydrateRoot']>[0]
+type HydrateableContainer = Parameters<
+  (typeof ReactDOMClient)['hydrateRoot']
+>[0]
 /** @deprecated */
 export interface ClientRenderOptions<
   Q extends Queries,
@@ -183,7 +185,7 @@ export function render(
 
 /**
  * An async version of `render` that uses `await act(async () => {...})` to
- * fully flush all pending effects — including `useLayoutEffect` chains that
+ * fully flush all pending effects - including `useLayoutEffect` chains that
  * trigger state updates and re-renders (common in React-Aria and similar
  * libraries). Use this when components don't appear fully initialised after a
  * synchronous `render` call.
@@ -199,7 +201,11 @@ export function renderAsync<
 >(
   ui: React.ReactNode,
   options: RenderOptions<Q, Container, BaseElement>,
-): Promise<RenderResult<Q, Container, BaseElement> & {rerender: (ui: React.ReactNode) => Promise<void>}>
+): Promise<
+  RenderResult<Q, Container, BaseElement> & {
+    rerender: (ui: React.ReactNode) => Promise<void>
+  }
+>
 export function renderAsync(
   ui: React.ReactNode,
   options?: Omit<RenderOptions, 'queries'> | undefined,

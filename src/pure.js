@@ -78,7 +78,7 @@ const mountedContainers = new Set()
 const mountedRootEntries = []
 
 function strictModeIfNeeded(innerElement, reactStrictMode) {
-  return reactStrictMode ?? getConfig().reactStrictMode
+  return (reactStrictMode ?? getConfig().reactStrictMode)
     ? React.createElement(React.StrictMode, null, innerElement)
     : innerElement
 }
@@ -392,7 +392,7 @@ function render(ui, options = {}) {
 
 /**
  * An async version of `render` that uses `await act(async () => {...})` to
- * fully flush all pending effects — including `useLayoutEffect` chains that
+ * fully flush all pending effects - including `useLayoutEffect` chains that
  * trigger state updates and re-renders (common in React-Aria and similar
  * libraries). Use this when components don't appear fully initialised after a
  * synchronous `render` call.
@@ -476,6 +476,15 @@ function renderHook(renderCallback, options = {}) {
 
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, renderAsync, renderHook, cleanup, act, fireEvent, getConfig, configure}
+export {
+  render,
+  renderAsync,
+  renderHook,
+  cleanup,
+  act,
+  fireEvent,
+  getConfig,
+  configure,
+}
 
 /* eslint func-name-matching:0 */
